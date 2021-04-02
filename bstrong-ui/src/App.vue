@@ -21,7 +21,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title class="black--text" @click="changeTitle">{{
+            <v-list-item-title class="black--text">{{
               item.title
             }}</v-list-item-title>
           </v-list-item-content>
@@ -47,7 +47,7 @@
 <script>
 export default {
   data: () => ({
-    appTitle: "Quick Dashboard",
+    appTitle: "Dashboard and Forms",
     drawer: null,
     items: [
       { title: "Quick Dashboard", icon: "mdi-view-dashboard", to: "/" },
@@ -67,11 +67,11 @@ export default {
     ],
   }),
 
-  methods: {
-    changeTitle(e) {
-      console.log(e);
-      this.appTitle = e.item.title;
-    },
-  },
+  // methods: {
+  //   changeTitle() {
+  //     // console.log(e);
+  //     this.appTitle = e.item.title;
+  //   },
+  // },
 };
 </script>

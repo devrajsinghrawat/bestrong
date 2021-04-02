@@ -21,7 +21,7 @@ const memberRecordSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    doj: {
+    txdate: {
         type: Date,
         required: true
     },
