@@ -1,0 +1,10 @@
+{
+    "test": {
+        "PORT": 9000,
+        "MONGODB_URI": "mongodb://mongo-bs-vps:27017/beStrongdB"
+    },
+    "development": {
+        "PORT": 9000,
+        "MONGODB_URI": "mongodb://mongo-bs-vps:27017/beStrongdB"
+    }
+}

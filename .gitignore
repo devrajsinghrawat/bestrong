@@ -1,0 +1,7 @@
+node_modules/
+
+bestrong-backend-v2/
+coverage
+db-data/
+.vscode
+.DS_Store

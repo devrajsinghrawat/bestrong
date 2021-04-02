@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  web:
+    container_name: ui-bs-vps
+    build: bestrong-ui
+    ports:
+      - 8080:8080
+    volumes:
+      - ./bestrong-ui:/project
+      - /project/node_modules
+    networks:
+      - vue-express
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend-bs-vps
+    restart: always
+    build: bestrong-backend
+    volumes:
+      - ./bestrong-backend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 9000:9000
+    depends_on:
+      - mongo
+    networks:
+      - express-mongo
+      - vue-express
+
+  mongo:
+    container_name: mongo-bs-vps
+    restart: always
+    image: mongo:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./db-data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - express-mongo
+networks:
+  vue-express:
+  express-mongo:
