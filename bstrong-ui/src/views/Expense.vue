@@ -43,7 +43,7 @@
       <v-row>
         <v-col cols="20" md="4">
           <v-text-field
-            v-model="expensePayload.expensedate"
+            v-model="expensePayload.txdate"
             type="date"
             label="Expense Date"
             prepend-icon="mdi-calendar-month"
@@ -127,7 +127,7 @@ export default {
 
     expensePayload: {
       expensetype: "",
-      expensedate: "",
+      txdate: "",
       mode: "",
       amount: "",
       remarks: "",
