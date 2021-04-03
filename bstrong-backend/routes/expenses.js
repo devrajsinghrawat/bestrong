@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
     console.log('Expense Post Req', req.body)
     const expense_record = new ExpenseRecord({
         "expensetype": req.body.expensetype,
-        "expensedate": req.body.expensedate,
+        "txdate": req.body.txdate,
         "mode": req.body.mode,
         "amount": req.body.amount,
         "remarks": req.body.remarks,

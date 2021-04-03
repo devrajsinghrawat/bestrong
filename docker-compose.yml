@@ -2,11 +2,11 @@ version: "3.7"
 services:
   web:
     container_name: ui-bs-vps
-    build: bestrong-ui
+    build: bstrong-ui
     ports:
       - 8080:8080
     volumes:
-      - ./bestrong-ui:/project
+      - ./bstrong-ui:/project
       - /project/node_modules
     networks:
       - vue-express
@@ -16,9 +16,9 @@ services:
   backend:
     container_name: backend-bs-vps
     restart: always
-    build: bestrong-backend
+    build: bstrong-backend
     volumes:
-      - ./bestrong-backend:/usr/src/app
+      - ./bstrong-backend:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - 9000:9000

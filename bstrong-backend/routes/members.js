@@ -35,12 +35,6 @@ router.post('/', async (req, res) => {
         age: req.body.age,
         address: req.body.address,
         gender: req.body.gender,
-        plan: req.body.plan,
-        doj: req.body.doj,
-        amount: req.body.amount,
-        balance: req.body.balance,
-        files: req.body.files,
-        remarks: req.body.remarks,
     })
 
     try {

@@ -5,7 +5,7 @@ const expensesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    expensedate: {
+    txdate: {
         type: Date,
         required: true
     },

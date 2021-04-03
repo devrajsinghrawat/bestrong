@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
         "mobile": req.body.mobile,
         "email": req.body.email,
         "plan": req.body.plan,
-        "doj": req.body.doj,
+        "txdate": req.body.txdate,
         "amount": req.body.amount,
         "balance": req.body.balance,
         "files": req.body.files,

@@ -177,7 +177,7 @@ export default {
   methods: {
     fetchMemberDetails() {
       alert("Hello");
-      const urlFetchMemberByMobile = `http://localhost:9000/api/memberRecords/${this.recordPayload.mobile}`;
+      const urlFetchMemberByMobile = `http://localhost:8080/api/memberRecords/${this.recordPayload.mobile}`;
       console.log("PostPayload --->", this.recordPayload);
 
       axios

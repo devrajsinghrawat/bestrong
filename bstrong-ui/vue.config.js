@@ -4,7 +4,7 @@ module.exports = {
     'vuetify'
   ],
   devServer: {
-    proxy: 'http://localhost:9000/',
+    proxy: 'http://backend-bs-vps:9000/',
   }
 }
 
