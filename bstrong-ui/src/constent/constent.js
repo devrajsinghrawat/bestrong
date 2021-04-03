@@ -9,4 +9,5 @@ export const urlFetchMemberRecordByMobile = "http://localhost:8080/api/memberRec
 
 // Home
 export const urlFetchMemberRecord = "http://localhost:8080/api/memberRecords/recentFiveMemberTx";
+export const urlFetchExpense = "http://localhost:8080/api/expenses/recentFiveExpenses";
 
