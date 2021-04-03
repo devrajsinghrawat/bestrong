@@ -14,6 +14,17 @@ router.get('/', async (req, res) => {
     console.log('Member get request')
 })
 
+router.get('/revenuebymonth', async (req, res) => {
+    console.log('/', req.params)
+    try {
+        const member_records = await MemberRecord.find()
+        res.json(member_records)
+    } catch (err) {
+        res.send('Error' + err)
+    }
+    console.log('Member get request')
+})
+
 // Fetch recent 5 tx
 router.get('/recentFiveMemberTx', async (req, res) => {
     try {
@@ -24,6 +35,23 @@ router.get('/recentFiveMemberTx', async (req, res) => {
         res.send('Error' + err)
     }
     console.log('Member tx get request')
+})
+
+// Member records by mobile
+router.get('/:mobile', async (req, res) => {
+    console.log('Params ', req.params.mobile)
+    try {
+        const member_records = await MemberRecord.find({ mobile: req.params.mobile })
+        if (member_records.length == 0) {
+            res.status(404).send('No member record found for given mobile number')
+        } else {
+            res.json(member_records)
+        }
+
+    } catch (err) {
+        res.send('Error' + err)
+    }
+    console.log('MemberRecord by ID get request')
 })
 
 router.post('/', async (req, res) => {
