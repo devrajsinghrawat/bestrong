@@ -14,6 +14,22 @@ router.get('/', async (req, res) => {
     console.log('Member get request')
 })
 
+router.get('/:mobile', async (req, res) => {
+    console.log('Params ', req.params.mobile)
+    try {
+        const member_records = await Member.find({ mobile: req.params.mobile })
+        if (member_records.length == 0) {
+            res.status(404).send('No member record found for given mobile number')
+        } else {
+            res.json(member_records[0])
+        }
+
+    } catch (err) {
+        res.send('Error' + err)
+    }
+    console.log('MemberRecord by ID get request')
+})
+
 // Fetch recent 5 registrations
 router.get('/recentFiveRegistration', async (req, res) => {
     try {

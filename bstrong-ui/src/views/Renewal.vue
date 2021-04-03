@@ -1,32 +1,35 @@
 <template>
   <v-form v-model="valid">
     <div v-if="savingSuccessful">
-      <v-alert
-        v-model="alert"
-        dismissible
-        color="cyan"
-        border="left"
-        elevation="2"
-        colored-border
-        icon="mdi-twitter"
-      >
-        <strong>{{ message }}</strong>
+      <v-alert type="success">
+        <span class="messagetextcolor">
+          <strong>{{ message }}</strong>
+        </span>
+      </v-alert>
+    </div>
+
+    <div v-if="savingError">
+      <v-alert type="error">
+        <span class="messagetextcolor">
+          <strong>{{ message }}</strong>
+        </span>
       </v-alert>
     </div>
 
     <v-container>
       <v-row>
-        <v-col cols="20" md="3">
+        <v-col cols="20" md="2">
           <v-text-field
             v-model="recordPayload.mobile"
             label="Registered Mobile Number"
             prepend-icon="mdi-phone"
             required
+            color="red"
             @change="fetchMemberDetails"
           ></v-text-field>
         </v-col>
 
-        <v-col cols="20" md="3">
+        <v-col cols="20" md="2">
           <v-text-field
             v-model="recordPayload.name"
             label="Name"
@@ -54,12 +57,13 @@
       <v-row>
         <v-col cols="20" md="2">
           <v-select
-            v-model="recordPayload.expensetype"
+            v-model="recordPayload.plan"
             :items="plans"
             label="Plan"
             prepend-icon="mdi-chemical-weapon"
             required
             dense
+            color="red"
           ></v-select>
         </v-col>
       </v-row>
@@ -67,30 +71,31 @@
 
     <v-container>
       <v-row>
-        <v-col cols="20" md="3">
+        <v-col cols="20" md="2">
           <v-text-field
-            v-model="recordPayload.expensedate"
+            v-model="recordPayload.txdate"
             type="date"
             label="Renewal Date"
             prepend-icon="mdi-calendar-month"
+            color="red"
             required
           ></v-text-field>
         </v-col>
-        <v-col cols="20" md="3">
+        <v-col cols="20" md="2">
           <v-text-field
             v-model="recordPayload.amount"
             label="Amount Paid"
             prepend-icon="mdi-book-open"
+            color="red"
             required
           >
           </v-text-field>
         </v-col>
-        <v-col cols="20" md="3">
+        <v-col cols="20" md="2">
           <v-text-field
-            v-model="recordPayload.amount"
+            v-model="recordPayload.balance"
             label="Balance"
             prepend-icon="mdi-book-open"
-            required
           >
           </v-text-field>
         </v-col>
@@ -140,8 +145,8 @@
 
     <v-row align="center" justify="space-around">
       <v-col cols="20" md="8">
-        <v-btn color="yellow" class="ma-2 black--text" @click="submitExpense">
-          Submit Expense
+        <v-btn color="yellow" class="ma-2 black--text" @click="submitRenew">
+          Renew Member
           <v-icon right dark> mdi-cloud-upload </v-icon>
         </v-btn>
       </v-col>
@@ -151,6 +156,10 @@
 
 <script>
 import axios from "axios";
+import {
+  urlMemberRecordPost,
+  urlFetchMemberByMobile,
+} from "./../constent/constent";
 
 export default {
   data: () => ({
@@ -165,33 +174,47 @@ export default {
       email: "",
       plan: "",
       txdate: "",
-      amount: "",
-      balance: "",
+      amount: 0,
+      balance: 0,
       remarks: "",
       files: "",
     },
     savingSuccessful: false,
-    message: "",
+    savingError: false,
+    message: "test",
   }),
 
   methods: {
     fetchMemberDetails() {
-      alert("Hello");
-      const urlFetchMemberByMobile = `http://localhost:8080/api/memberRecords/${this.recordPayload.mobile}`;
-      console.log("PostPayload --->", this.recordPayload);
-
+      const urlGet = urlFetchMemberByMobile + this.recordPayload.mobile;
+      console.log("urlGet  --->", urlGet);
       axios
-        .post(urlFetchMemberByMobile, this.recordPayload)
+        .get(urlGet, this.recordPayload)
         .then((response) => {
-          this.savingSuccessful = true;
           this.recordPayload.name = response.data.name;
           this.recordPayload.email = response.data.email;
-          console.log("Response Payload --->", response.data.amount);
+        })
+        .catch((error) => {
+          this.savingError = true;
+          this.message = "Member does not exist Yet!";
+          console.error("There was an error!", error);
+        });
+    },
+
+    submitRenew() {
+      /** Record the Member Tx data for Registration */
+      axios
+        .post(urlMemberRecordPost, this.recordPayload)
+        .then((res) => {
+          this.savingSuccessful = true;
+          console.log("Response Payload --->", res.data.amount);
+          this.message = `Renewal Successful : Name - ${res.data.name}, Plan - ${res.data.plan}, Amount - ${res.data.amount}, Balance - ${res.data.balance}`;
+          console.log("Response from Member Record Data", res.data);
         })
         .catch((error) => {
           this.savingSuccessful = true;
-          this.message = "Member does not exist Yet!";
-          console.error("There was an error!", error);
+          this.message = "Error while capturing the Member Record!";
+          console.error("Error while capturing the Member Record", error);
         });
     },
   },
