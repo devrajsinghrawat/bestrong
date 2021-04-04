@@ -5,7 +5,11 @@ const ExpenseRecord = require('../models/expense')
 
 var revenuePayload = {
     "netRevenue": '',                          // Sum of all member records till date
+    "netCashRevenue": '',
+    "netBankRevenue": '',
     "netExpense": '',                          // Sum of all Expense records till date
+    "netExpense": '',
+    "netCashExpense": '',
     "netPending": '',                          // Sum of all Pending records till date
     "netCompanyBalance": '',                   // Net Revenue - Net Expense
     "netCashBalance": '',                      // Net Cash Revenue - Net Cash Expense
@@ -183,7 +187,13 @@ router.get('/', async (req, res) => {
         });
 
         revenuePayload.netRevenue = netRevenue;
+        revenuePayload.netCashRevenue = netCashRevenue;
+        revenuePayload.netBankRevenue = netBankRevenue;
+
         revenuePayload.netExpense = netExpense;
+        revenuePayload.netCashExpense = netCashExpense;
+        revenuePayload.netBankExpense = netBankExpense;
+
         revenuePayload.netPending = netPending;
         revenuePayload.netBankBalance = netBankRevenue - netBankExpense;
         revenuePayload.netCashBalance = netCashRevenue - netCashExpense;
