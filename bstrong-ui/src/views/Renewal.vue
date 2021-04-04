@@ -66,6 +66,17 @@
             color="red"
           ></v-select>
         </v-col>
+        <v-col cols="20" md="3">
+          <v-select
+            v-model="recordPayload.mode"
+            :items="itemsmode"
+            label="Payment Mode"
+            prepend-icon="mdi-book-open"
+            color="red"
+            required
+            dense
+          ></v-select>
+        </v-col>
       </v-row>
     </v-container>
 
@@ -174,6 +185,7 @@ export default {
       email: "",
       plan: "",
       txdate: "",
+      mode: "",
       amount: 0,
       balance: 0,
       remarks: "",
