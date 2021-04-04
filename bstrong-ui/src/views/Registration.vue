@@ -76,6 +76,18 @@
       <v-row>
         <v-col cols="20" md="2">
           <v-select
+            v-model="recordPayload.gender"
+            :items="genders"
+            label="Gender"
+            prepend-icon="mdi-chemical-weapon"
+            required
+            color="red"
+            dense
+          ></v-select>
+        </v-col>
+
+        <v-col cols="20" md="3">
+          <v-select
             v-model="recordPayload.plan"
             :items="plans"
             label="Plan"
@@ -86,14 +98,14 @@
           ></v-select>
         </v-col>
 
-        <v-col cols="20" md="2">
+        <v-col cols="20" md="3">
           <v-select
-            v-model="recordPayload.gender"
-            :items="genders"
-            label="Gender"
-            prepend-icon="mdi-chemical-weapon"
-            required
+            v-model="recordPayload.mode"
+            :items="itemsmode"
+            label="Payment Mode"
+            prepend-icon="mdi-book-open"
             color="red"
+            required
             dense
           ></v-select>
         </v-col>
@@ -113,60 +125,7 @@
           ></v-text-field>
         </v-col>
 
-        <!-- <v-col cols="12" lg="6">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="recordPayload.txdate"
-                label="Registration Date"
-                hint="MM/DD/YYYY format"
-                persistent-hint
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="date"
-              no-title
-              @input="menu2 = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col> -->
-
-        <!-- <v-col cols="12" lg="2">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            max-width="290"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                :value="computedDateFormattedMomentjs"
-                clearable
-                label="Registration Date"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-                @click:clear="recordPayload.txdate = null"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="recordPayload.txdate"
-              @change="menu2 = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col> -->
-
-        <v-col cols="20" md="2">
+        <v-col cols="20" md="3">
           <v-text-field
             v-model="recordPayload.amount"
             label="Amount Paid"
@@ -177,7 +136,7 @@
           </v-text-field>
         </v-col>
 
-        <v-col cols="20" md="2">
+        <v-col cols="20" md="3">
           <v-text-field
             v-model="recordPayload.balance"
             label="Balance (if any)"
@@ -251,6 +210,7 @@ export default {
     valid: false,
     genders: ["Male", "Female", "Rather not to say"],
     plans: ["1 Month", "3 Months", "6 Months", "1 Year"],
+    itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
 
     recordPayload: {
       name: "",
@@ -261,7 +221,7 @@ export default {
       gender: "",
       plan: "",
       txdate: "",
-      // txdate: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
+      mode: "",
       amount: "",
       balance: "0",
       remarks: "",
@@ -300,6 +260,7 @@ export default {
         email: this.recordPayload.email,
         plan: this.recordPayload.plan,
         txdate: this.recordPayload.txdate,
+        mode: this.recordPayload.mode,
         amount: this.recordPayload.amount,
         balance: this.recordPayload.balance,
         files: this.recordPayload.files,

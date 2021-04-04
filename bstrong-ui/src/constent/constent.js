@@ -16,3 +16,6 @@ export const urlFetchExpense = `${baseUrl}:${port}/api/expenses/recentFiveExpens
 
 // Expense
 export const urlExpensePost = `${baseUrl}:${port}/api/expenses/`;
+
+// Revenue
+export const urlFetchRevenueRecord = `${baseUrl}:${port}/api/revenues/`;

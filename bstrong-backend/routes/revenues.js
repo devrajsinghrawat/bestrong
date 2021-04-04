@@ -132,12 +132,12 @@ router.get('/', async (req, res) => {
             "renewal": 0
         }]
 
-        console.log("Revenue Records --> ", revenue_records)
-        console.log("Expense Records --> ", expense_records)
+        // console.log("Revenue Records --> ", revenue_records)
+        // console.log("Expense Records --> ", expense_records)
 
         // Process revenue records
         revenue_records.forEach(record => {
-            console.log("Loop Revenue Records --> ", record)
+            // console.log("Loop Revenue Records --> ", record)
 
             netRevenue += record.amount;
             netPending += record.balance;
@@ -148,12 +148,13 @@ router.get('/', async (req, res) => {
                 netBankRevenue += record.amount
             }
             // Check the month of Records
-            var date = new Date();
-            var month = date.getMonth(record.txdate);
+            var date = new Date(record.txdate);
+            var month = date.getMonth();
             console.log('record.txdate', record.txdate)
             console.log('Month', month)
-            // monthlyData[month].month = month;
             monthlyData[month].revenue += record.amount;
+            console.log('monthlyData[month]', monthlyData[month])
+
 
             // Count number of registration for fetched month
             record.txtype == "REGISTRATION" ?
@@ -162,6 +163,8 @@ router.get('/', async (req, res) => {
         });
 
         expense_records.forEach(record => {
+            console.log("Loop Expense Records --> ", record)
+
             netExpense += record.amount;
 
             if (record.mode == 'Cash') {
@@ -170,8 +173,11 @@ router.get('/', async (req, res) => {
                 netBankExpense += record.amount
             }
             // Check the month of Records
-            var date = new Date();
-            var month = date.getMonth(record.txdate);
+            var date = new Date(record.txdate);
+            var month = date.getMonth();
+            console.log("monthlyData[month].revenue", monthlyData[month].revenue)
+            console.log("record.amount", record.amount)
+
             monthlyData[month].expense += record.amount;
             monthlyData[month].pl = monthlyData[month].revenue - record.amount;
         });

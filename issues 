@@ -1,0 +1,22 @@
+- send a proper respnse code from backend for any spefic calls
+- Error messaegs on UI console
+- User dashboard
+
+- Duplicate record check
+- on Screen Validation before submit
+-
+
+renew
+- fetch all ( phone number - Name ) and bind it with renew screen so that no error check required for non registered users
+
+backend
+- Export all records
+- import all records
+- fetch all ( phone number - Name ) and bind it with renew screen so that no error check required for non registered users
+
+Revenue
+- fetch monthly revenue and expense
+
+memberDashboard
+if member does not exist then throw a message
+
