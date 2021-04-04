@@ -117,10 +117,10 @@
 
 <script>
 import axios from "axios";
+import { urlExpensePost } from "./../constent/constent";
 
 export default {
   data: () => ({
-    url: "http://localhost:8080/api/expenses",
     valid: false,
     itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
     itemstype: ["Rent", "Bill Payment", "Salary", "Item Purchase", "Others"],
@@ -142,7 +142,7 @@ export default {
       console.log("PostPayload --->", this.expensePayload);
 
       axios
-        .post(this.url, this.expensePayload)
+        .post(urlExpensePost, this.expensePayload)
         .then((response) => {
           this.savingSuccessful = true;
           this.message = response.data.amount;

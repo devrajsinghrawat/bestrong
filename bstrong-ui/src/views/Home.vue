@@ -35,7 +35,7 @@ export default {
           text: "Expenses Type",
           value: "expensetype",
         },
-        { text: "Date", value: "txdate" },
+        { text: "Date Of Expense", value: "txdate" },
         { text: "Mode of Payment", value: "mode" },
         { text: "Amount", value: "amount" },
         { text: "Expense Description", value: "remarks" },
