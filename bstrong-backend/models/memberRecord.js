@@ -25,6 +25,10 @@ const memberRecordSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    mode: {
+        type: String,
+        required: true
+    },
     amount: {
         type: Number,
         required: true

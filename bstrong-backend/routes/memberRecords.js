@@ -63,6 +63,7 @@ router.post('/', async (req, res) => {
         "email": req.body.email,
         "plan": req.body.plan,
         "txdate": req.body.txdate,
+        "mode": req.body.mode,
         "amount": req.body.amount,
         "balance": req.body.balance,
         "files": req.body.files,

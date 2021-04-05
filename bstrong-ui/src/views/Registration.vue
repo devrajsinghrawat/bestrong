@@ -76,6 +76,18 @@
       <v-row>
         <v-col cols="20" md="2">
           <v-select
+            v-model="recordPayload.gender"
+            :items="genders"
+            label="Gender"
+            prepend-icon="mdi-chemical-weapon"
+            required
+            color="red"
+            dense
+          ></v-select>
+        </v-col>
+
+        <v-col cols="20" md="3">
+          <v-select
             v-model="recordPayload.plan"
             :items="plans"
             label="Plan"
@@ -86,14 +98,14 @@
           ></v-select>
         </v-col>
 
-        <v-col cols="20" md="2">
+        <v-col cols="20" md="3">
           <v-select
-            v-model="recordPayload.gender"
-            :items="genders"
-            label="Gender"
-            prepend-icon="mdi-chemical-weapon"
-            required
+            v-model="recordPayload.mode"
+            :items="itemsmode"
+            label="Payment Mode"
+            prepend-icon="mdi-book-open"
             color="red"
+            required
             dense
           ></v-select>
         </v-col>
@@ -113,60 +125,7 @@
           ></v-text-field>
         </v-col>
 
-        <!-- <v-col cols="12" lg="6">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="recordPayload.txdate"
-                label="Registration Date"
-                hint="MM/DD/YYYY format"
-                persistent-hint
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="date"
-              no-title
-              @input="menu2 = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col> -->
-
-        <!-- <v-col cols="12" lg="2">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            max-width="290"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                :value="computedDateFormattedMomentjs"
-                clearable
-                label="Registration Date"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-                @click:clear="recordPayload.txdate = null"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="recordPayload.txdate"
-              @change="menu2 = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col> -->
-
-        <v-col cols="20" md="2">
+        <v-col cols="20" md="3">
           <v-text-field
             v-model="recordPayload.amount"
             label="Amount Paid"
@@ -177,7 +136,7 @@
           </v-text-field>
         </v-col>
 
-        <v-col cols="20" md="2">
+        <v-col cols="20" md="3">
           <v-text-field
             v-model="recordPayload.balance"
             label="Balance (if any)"
@@ -244,13 +203,17 @@
 import axios from "axios";
 // import moment from "moment";
 // const { format, parseISO } = require("date-fns");
-import { urlMemberPost, urlMemberRecordPost } from "./../constent/constent";
+import { memberPostAPI, memberRecordPostAPI } from "./../constent/constent";
 
 export default {
   data: () => ({
+    baseurl: process.env.VUE_APP_BASE_URL,
+    port: process.env.VUE_APP_UI_PORT,
+
     valid: false,
     genders: ["Male", "Female", "Rather not to say"],
     plans: ["1 Month", "3 Months", "6 Months", "1 Year"],
+    itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
 
     recordPayload: {
       name: "",
@@ -261,7 +224,7 @@ export default {
       gender: "",
       plan: "",
       txdate: "",
-      // txdate: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
+      mode: "",
       amount: "",
       balance: "0",
       remarks: "",
@@ -300,6 +263,7 @@ export default {
         email: this.recordPayload.email,
         plan: this.recordPayload.plan,
         txdate: this.recordPayload.txdate,
+        mode: this.recordPayload.mode,
         amount: this.recordPayload.amount,
         balance: this.recordPayload.balance,
         files: this.recordPayload.files,
@@ -309,24 +273,25 @@ export default {
       console.log("PostPayload recordPayload --->", this.recordPayload);
       console.log("PostPayload registerPayload --->", registerPayload);
 
-      console.log("urlMemberPost --->", urlMemberPost);
-
+      // console.log("urlMemberPost --->", urlMemberPost);
+      const url = `${this.baseurl}:${this.port}${memberPostAPI}`;
       /** Record the Member Registration data*/
       axios
-        .post(urlMemberPost, registerPayload)
+        .post(url, registerPayload)
         .then((response) => {
           this.savingSuccessful = true;
           this.message = `Congratuations ${response.data.name} Welcome to BeStrong Family !`;
           console.log("Register Response --->", response.data);
 
-          console.log("urlMemberRecordPost --->", urlMemberRecordPost);
           console.log(
             "PostPayload memberRecordPayload --->",
             memberRecordPayload
           );
+          const url = `${this.baseurl}:${this.port}${memberRecordPostAPI}`;
+
           /** Record the Member Tx data for Registration */
           axios
-            .post(urlMemberRecordPost, memberRecordPayload)
+            .post(url, memberRecordPayload)
             .then((res) => {
               console.log("Response from Member Record Data", res.data);
             })

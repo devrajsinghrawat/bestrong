@@ -21,7 +21,7 @@
         <template v-slot:opposite>
           <span
             :class="`headline font-weight-bold green--text`"
-            v-text="member_record.txdate"
+            v-text="getDate(member_record.txdate)"
           ></span>
         </template>
 
@@ -59,10 +59,13 @@
 
 <script>
 import axios from "axios";
-import { urlFetchMemberRecord } from "./../constent/constent";
+import { fetchMemberRecordByMobileAPI } from "./../constent/constent";
 
 export default {
   data: () => ({
+    baseurl: process.env.VUE_APP_BASE_URL,
+    port: process.env.VUE_APP_UI_PORT,
+
     member_records: [],
     mobile: "",
   }),
@@ -70,10 +73,12 @@ export default {
   methods: {
     fetchMemberDetails() {
       this.member_records = [];
-      const urlGet = urlFetchMemberRecord;
-      console.log("urlGet  --->", urlGet);
+      const url =
+        `${this.baseurl}:${this.port}${fetchMemberRecordByMobileAPI}` +
+        this.mobile;
+
       axios
-        .get(urlGet, this.recordPayload)
+        .get(url)
         .then((response) => {
           this.member_records = response.data;
           console.log(response.data);
@@ -83,6 +88,10 @@ export default {
           this.message = "Member does not exist Yet!";
           console.error("There was an error!", error);
         });
+    },
+
+    getDate(txdate) {
+      return new Date(txdate).toDateString();
     },
   },
 };

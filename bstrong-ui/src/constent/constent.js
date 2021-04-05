@@ -1,13 +1,17 @@
 // Register
-export const urlMemberPost = "http://localhost:8080/api/members/";
-export const urlMemberRecordPost = "http://localhost:8080/api/memberRecords/";
+export const memberPostAPI = '/api/members/';
+export const memberRecordPostAPI = '/api/memberRecords/';
 
 // Renewal
-export const urlFetchMemberByMobile = "http://localhost:8080/api/members/";
-
-export const urlFetchMemberRecordByMobile = "http://localhost:8080/api/memberRecords/";
+export const fetchMemberByMobileAPI = '/api/members/';
+export const fetchMemberRecordByMobileAPI = '/api/memberRecords/';
 
 // Home
-export const urlFetchMemberRecord = "http://localhost:8080/api/memberRecords/recentFiveMemberTx";
-export const urlFetchExpense = "http://localhost:8080/api/expenses/recentFiveExpenses";
+export const fetchMemberRecordAPI = '/api/memberRecords/recentFiveMemberTx';
+export const fetchExpenseAPI = '/api/expenses/recentFiveExpenses';
 
+// Expense
+export const expensePostAPI = '/api/expenses/';
+
+// Revenue
+export const revenueRecordAPI = '/api/revenues/';

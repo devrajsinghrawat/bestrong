@@ -42,6 +42,9 @@ app.use('/api/memberRecords', memberRecordRouter)
 const expenseRouter = require('./routes/expenses')
 app.use('/api/expenses', expenseRouter)
 
+const revenueRouter = require('./routes/revenues')
+app.use('/api/revenues', revenueRouter)
+
 app.listen(9000, () => {
     console.log('Server Started !!')
 })

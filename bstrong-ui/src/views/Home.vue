@@ -1,5 +1,47 @@
 <template>
-  <v-card>
+  <v-container fluid>
+    <v-card-title>
+      <v-text-field
+        label="Recent Member Transactions"
+        single-line
+        hide-details
+        readonly
+      ></v-text-field>
+    </v-card-title>
+    <template>
+      <v-data-table
+        :headers="headers"
+        :items="memberrecords"
+        class="elevation-1"
+      >
+        <template v-slot:[`item.txdate`]="{ item }">
+          <span v-text="getDate(item.txdate)" dark> </span>
+        </template>
+      </v-data-table>
+    </template>
+
+    <v-card-title>
+      <v-text-field
+        label="Recent Expense Transactions"
+        single-line
+        hide-details
+        readonly
+      ></v-text-field>
+    </v-card-title>
+    <template>
+      <v-data-table
+        :headers="headersexpense"
+        :items="expenserecords"
+        class="elevation-1"
+      >
+        <template v-slot:[`item.txdate`]="{ item }">
+          <span v-text="getDate(item.txdate)" dark> </span>
+        </template>
+      </v-data-table>
+    </template>
+  </v-container>
+
+  <!-- <v-card>
     <v-card-title>
       <v-text-field
         label="Recent Member Transactions"
@@ -20,22 +62,26 @@
       :headers="headersexpense"
       :items="expenserecords"
     ></v-data-table>
-  </v-card>
+  </v-card> -->
 </template>
 
 <script>
 import axios from "axios";
-import { urlFetchMemberRecord, urlFetchExpense } from "./../constent/constent";
+import { fetchMemberRecordAPI, fetchExpenseAPI } from "./../constent/constent";
 
 export default {
   data() {
     return {
+      baseurl: process.env.VUE_APP_BASE_URL,
+      port: process.env.VUE_APP_UI_PORT,
+
       headersexpense: [
+        { text: "Date Of Expense", value: "txdate" },
         {
           text: "Expenses Type",
           value: "expensetype",
         },
-        { text: "Date", value: "txdate" },
+
         { text: "Mode of Payment", value: "mode" },
         { text: "Amount", value: "amount" },
         { text: "Expense Description", value: "remarks" },
@@ -44,6 +90,7 @@ export default {
       expenserecords: [],
 
       headers: [
+        { text: "Date", value: "txdate" },
         {
           text: "Transaction Type",
           align: "start",
@@ -53,16 +100,15 @@ export default {
         { text: "Name", value: "name" },
         { text: "Mobile", value: "mobile" },
         { text: "Plan", value: "plan" },
-        { text: "Date", value: "txdate" },
       ],
       memberrecords: [],
     };
   },
 
   mounted: function () {
-    console.log(urlFetchMemberRecord);
+    const urlMemberRecords = `${this.baseurl}:${this.port}${fetchMemberRecordAPI}`;
     axios
-      .get(urlFetchMemberRecord)
+      .get(urlMemberRecords)
       .then((response) => {
         console.log(response.data);
         this.memberrecords = response.data;
@@ -74,8 +120,9 @@ export default {
       });
 
     // Fetch recent expense
+    const urlExpenseRecords = `${this.baseurl}:${this.port}${fetchExpenseAPI}`;
     axios
-      .get(urlFetchExpense)
+      .get(urlExpenseRecords)
       .then((response) => {
         console.log(response.data);
         this.expenserecords = response.data;
@@ -85,6 +132,12 @@ export default {
         this.message = "Member does not exist Yet!";
         console.error("There was an error!", error);
       });
+  },
+  // Helper functions
+  methods: {
+    getDate(txdate) {
+      return new Date(txdate).toDateString();
+    },
   },
 };
 </script>
