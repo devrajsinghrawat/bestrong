@@ -21,7 +21,7 @@
         <template v-slot:opposite>
           <span
             :class="`headline font-weight-bold green--text`"
-            v-text="member_record.txdate"
+            v-text="getDate(member_record.txdate)"
           ></span>
         </template>
 
@@ -88,6 +88,10 @@ export default {
           this.message = "Member does not exist Yet!";
           console.error("There was an error!", error);
         });
+    },
+
+    getDate(txdate) {
+      return new Date(txdate).toDateString();
     },
   },
 };
