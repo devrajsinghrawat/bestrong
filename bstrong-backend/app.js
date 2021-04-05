@@ -16,20 +16,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// var url = "mongodb://localhost:27017/beStrongdB";
-// mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-
-// const con = mongoose.connection
-// con.on('open', () => {
-//     console.log('dB Connetced !!')
-// })
-
-// app.use((req, res, next) => {
-//     req.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-// });
-
 /** Express Framework */
 app.use(express.json())
 

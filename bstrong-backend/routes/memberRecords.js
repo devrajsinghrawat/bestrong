@@ -26,10 +26,10 @@ router.get('/revenuebymonth', async (req, res) => {
 })
 
 // Fetch recent 5 tx
-router.get('/recentFiveMemberTx', async (req, res) => {
+router.get('/recentMemberTx', async (req, res) => {
     try {
         const member_records = await MemberRecord.find()
-        const result = member_records.slice(-5)
+        const result = member_records.slice(-10)
         res.json(result)
     } catch (err) {
         res.send('Error' + err)

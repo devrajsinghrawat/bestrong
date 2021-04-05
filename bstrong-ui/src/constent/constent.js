@@ -7,8 +7,8 @@ export const fetchMemberByMobileAPI = '/api/members/';
 export const fetchMemberRecordByMobileAPI = '/api/memberRecords/';
 
 // Home
-export const fetchMemberRecordAPI = '/api/memberRecords/recentFiveMemberTx';
-export const fetchExpenseAPI = '/api/expenses/recentFiveExpenses';
+export const fetchMemberRecordAPI = '/api/memberRecords/recentMemberTx';
+export const fetchExpenseAPI = '/api/expenses/recentExpenses';
 
 // Expense
 export const expensePostAPI = '/api/expenses/';

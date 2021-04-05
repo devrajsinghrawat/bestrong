@@ -192,7 +192,10 @@
             <validation-provider
               v-slot="{ errors }"
               name="Amount"
-              rules="required"
+              :rules="{
+                required: true,
+                numeric: true,
+              }"
             >
               <v-text-field
                 v-model="recordPayload.amount"
@@ -209,8 +212,11 @@
           <v-col cols="20" md="3">
             <validation-provider
               v-slot="{ errors }"
-              name="Amount"
-              rules="required"
+              name="Balance"
+              :rules="{
+                required: true,
+                numeric: true,
+              }"
             >
               <v-text-field
                 v-model="recordPayload.balance"
@@ -289,7 +295,14 @@
 import axios from "axios";
 import { memberPostAPI, memberRecordPostAPI } from "./../constent/constent";
 
-import { required, digits, email, max, regex } from "vee-validate/dist/rules";
+import {
+  required,
+  digits,
+  numeric,
+  email,
+  max,
+  regex,
+} from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -307,6 +320,11 @@ extend("digits", {
 extend("required", {
   ...required,
   message: "{_field_} can not be empty",
+});
+
+extend("numeric", {
+  ...numeric,
+  message: "{_field_} should be numbers only",
 });
 
 extend("max", {

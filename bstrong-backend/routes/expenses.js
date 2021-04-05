@@ -14,20 +14,17 @@ router.get('/', async (req, res) => {
     console.log('Expense get request')
 })
 
-// Fetch recent 5 registrations
-router.get('/recentFiveExpenses', async (req, res) => {
+// Fetch recent 10 registrations
+router.get('/recentExpenses', async (req, res) => {
     try {
         const expense_records = await ExpenseRecord.find()
-        const result = expense_records.slice(-5)
+        const result = expense_records.slice(-10)
         res.json(result)
     } catch (err) {
         res.send('Error' + err)
     }
-    console.log('Member tx get request')
+    console.log('Expense tx get request')
 })
-
-
-
 
 router.post('/', async (req, res) => {
     console.log('Expense Post Req', req.body)

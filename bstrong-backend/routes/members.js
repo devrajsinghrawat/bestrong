@@ -30,11 +30,11 @@ router.get('/:mobile', async (req, res) => {
     console.log('MemberRecord by ID get request')
 })
 
-// Fetch recent 5 registrations
-router.get('/recentFiveRegistration', async (req, res) => {
+// Fetch recent 5 registrations  ! This is not in use
+router.get('/recentRegistration', async (req, res) => {
     try {
         const members = await Member.find()
-        const result = members.slice(-5)
+        const result = members.slice(-10)
         res.json(result)
     } catch (err) {
         res.send('Error' + err)
