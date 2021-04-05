@@ -51,6 +51,8 @@ router.post('/', async (req, res) => {
         age: req.body.age,
         address: req.body.address,
         gender: req.body.gender,
+        infosign: req.body.infosign,
+        termssign: req.body.termssign,
     })
 
     try {

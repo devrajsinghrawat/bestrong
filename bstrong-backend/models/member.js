@@ -25,6 +25,14 @@ const memberSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    infosign: {
+        type: String,
+        required: true
+    },
+    termssign: {
+        type: String,
+        required: true
+    },
 })
 
 const member = mongoose.model('member', memberSchema)
