@@ -112,7 +112,11 @@
                 required
               ></v-select>
             </validation-provider>
+          </v-col>
+        </v-row>
 
+        <v-row>
+          <v-col cols="20" md="3">
             <validation-provider
               v-slot="{ errors }"
               name="plan"
@@ -129,7 +133,8 @@
                 dense
               ></v-select>
             </validation-provider>
-
+          </v-col>
+          <v-col cols="20" md="3">
             <validation-provider
               v-slot="{ errors }"
               name="mode"
@@ -150,21 +155,37 @@
         </v-row>
 
         <v-row>
-          <v-col cols="20" md="2">
-            <validation-provider
-              v-slot="{ errors }"
-              name="Date"
-              rules="required"
+          <v-col cols="12" sm="6" md="3">
+            <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
             >
-              <v-text-field
+              <template v-slot:activator="{ on, attrs }">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Date"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model="recordPayload.txdate"
+                    label="Joining Date"
+                    prepend-icon="mdi-calendar"
+                    :error-messages="errors"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </validation-provider>
+              </template>
+              <v-date-picker
                 v-model="recordPayload.txdate"
-                :error-messages="errors"
-                type="date"
-                label="Joining Date"
-                prepend-icon="mdi-calendar-month"
-                required
-              ></v-text-field>
-            </validation-provider>
+                @input="menu = false"
+              ></v-date-picker>
+            </v-menu>
           </v-col>
 
           <v-col cols="20" md="3">
@@ -316,6 +337,8 @@ export default {
     // savingSuccessful: false,
     postmessage: "",
     m: 0,
+
+    menu: false,
 
     checkbox: null,
     infomessage:

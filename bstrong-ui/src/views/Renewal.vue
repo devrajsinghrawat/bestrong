@@ -1,168 +1,209 @@
 <template>
-  <v-form v-model="valid">
-    <div v-if="savingSuccessful">
-      <v-alert type="success">
-        <span class="messagetextcolor">
-          <strong>{{ message }}</strong>
-        </span>
-      </v-alert>
-    </div>
+  <v-card
+    elevation="12"
+    shaped
+    class="mx-auto"
+    max-width="1020"
+    color="brown lighten-1"
+  >
+    <v-img
+      :src="`https://picsum.photos/1000/1000?image=${15 * 5 + 10}`"
+      aspect-ratio="18"
+    >
+    </v-img>
 
-    <div v-if="savingError">
-      <v-alert type="error">
-        <span class="messagetextcolor">
-          <strong>{{ message }}</strong>
-        </span>
-      </v-alert>
-    </div>
+    <validation-observer ref="observer" v-slot="{ invalid }">
+      <form @submit.prevent="submit">
+        <div>
+          <v-alert dense dismissible type="success" v-if="m == 1">
+            {{ postmessage }}.
+          </v-alert>
+          <v-alert dense dismissible type="error" v-if="m == 2">
+            {{ postmessage }}.
+          </v-alert>
+        </div>
 
-    <v-container>
-      <v-row>
-        <v-col cols="20" md="2">
-          <v-text-field
-            v-model="recordPayload.mobile"
-            label="Registered Mobile Number"
-            prepend-icon="mdi-phone"
-            required
-            color="red"
-            @change="fetchMemberDetails"
-          ></v-text-field>
-        </v-col>
+        <v-row>
+          <v-col cols="20" md="3">
+            <validation-provider
+              v-slot="{ errors }"
+              name="phoneNumber"
+              :rules="{
+                required: true,
+                digits: 10,
+              }"
+            >
+              <v-text-field
+                v-model="recordPayload.mobile"
+                label="Registered Mobile Number"
+                prepend-icon="mdi-phone"
+                :counter="10"
+                :error-messages="errors"
+                required
+                @change="fetchMemberDetails"
+              ></v-text-field>
+            </validation-provider>
+          </v-col>
 
-        <v-col cols="20" md="2">
-          <v-text-field
-            v-model="recordPayload.name"
-            label="Name"
-            prepend-icon="mdi-account"
-            disabled
-            required
-          >
-          </v-text-field>
-        </v-col>
+          <v-col cols="20" md="3">
+            <v-text-field
+              v-model="recordPayload.name"
+              label="Name"
+              prepend-icon="mdi-account"
+              disabled
+              required
+            >
+            </v-text-field>
+          </v-col>
 
-        <v-col cols="20" md="3">
-          <v-text-field
-            v-model="recordPayload.email"
-            label="Email"
-            prepend-icon="mdi-email"
-            disabled
-            required
-          >
-          </v-text-field>
-        </v-col>
-      </v-row>
-    </v-container>
+          <v-col cols="20" md="3">
+            <v-text-field
+              v-model="recordPayload.email"
+              label="Email"
+              prepend-icon="mdi-email"
+              disabled
+              required
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
 
-    <v-container>
-      <v-row>
-        <v-col cols="20" md="2">
-          <v-select
-            v-model="recordPayload.plan"
-            :items="plans"
-            label="Plan"
-            prepend-icon="mdi-chemical-weapon"
-            required
-            dense
-            color="red"
-          ></v-select>
-        </v-col>
-        <v-col cols="20" md="3">
-          <v-select
-            v-model="recordPayload.mode"
-            :items="itemsmode"
-            label="Payment Mode"
-            prepend-icon="mdi-book-open"
-            color="red"
-            required
-            dense
-          ></v-select>
-        </v-col>
-      </v-row>
-    </v-container>
+        <v-row>
+          <v-col cols="20" md="3">
+            <validation-provider
+              v-slot="{ errors }"
+              name="plan"
+              rules="required"
+            >
+              <v-select
+                v-model="recordPayload.plan"
+                :items="plans"
+                :error-messages="errors"
+                label="Plan"
+                data-vv-name="plan"
+                prepend-icon="mdi-chemical-weapon"
+                required
+                dense
+              ></v-select>
+            </validation-provider>
+          </v-col>
+          <v-col cols="20" md="3">
+            <validation-provider
+              v-slot="{ errors }"
+              name="mode"
+              rules="required"
+            >
+              <v-select
+                v-model="recordPayload.mode"
+                :items="itemsmode"
+                :error-messages="errors"
+                data-vv-name="mode"
+                label="Payment Mode"
+                prepend-icon="mdi-book-open"
+                required
+                dense
+              ></v-select>
+            </validation-provider>
+          </v-col>
+        </v-row>
 
-    <v-container>
-      <v-row>
-        <v-col cols="20" md="2">
-          <v-text-field
-            v-model="recordPayload.txdate"
-            type="date"
-            label="Renewal Date"
-            prepend-icon="mdi-calendar-month"
-            color="red"
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="20" md="2">
-          <v-text-field
-            v-model="recordPayload.amount"
-            label="Amount Paid"
-            prepend-icon="mdi-book-open"
-            color="red"
-            required
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="20" md="2">
-          <v-text-field
-            v-model="recordPayload.balance"
-            label="Balance"
-            prepend-icon="mdi-book-open"
-          >
-          </v-text-field>
-        </v-col>
-      </v-row>
-    </v-container>
+        <v-row>
+          <v-col cols="12" sm="6" md="3">
+            <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Date"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model="recordPayload.txdate"
+                    label="Renewal Date"
+                    prepend-icon="mdi-calendar"
+                    :error-messages="errors"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </validation-provider>
+              </template>
+              <v-date-picker
+                v-model="recordPayload.txdate"
+                @input="menu = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
 
-    <v-col cols="20" md="8">
-      <v-text-field
-        v-model="recordPayload.remarks"
-        label="Description"
-        prepend-icon="mdi-chat-processing-outline"
-      ></v-text-field>
-    </v-col>
+          <v-col cols="20" md="3">
+            <validation-provider
+              v-slot="{ errors }"
+              name="Amount"
+              rules="required"
+            >
+              <v-text-field
+                v-model="recordPayload.amount"
+                label="Amount Paid"
+                prepend-icon="mdi-book-open"
+                :counter="5"
+                :error-messages="errors"
+                required
+              >
+              </v-text-field>
+            </validation-provider>
+          </v-col>
 
-    <v-col cols="20" md="8">
-      <v-file-input
-        v-model="recordPayload.files"
-        color="deep-purple accent-4"
-        counter
-        label="File input"
-        multiple
-        placeholder="Select your files"
-        prepend-icon="mdi-paperclip"
-        outlined
-        :show-size="1000"
-      >
-        <template v-slot:selection="{ index, text }">
-          <v-chip
-            v-if="index < 2"
-            color="deep-purple accent-4"
-            dark
-            label
-            small
-          >
-            {{ text }}
-          </v-chip>
+          <v-col cols="20" md="3">
+            <validation-provider
+              v-slot="{ errors }"
+              name="Amount"
+              rules="required"
+            >
+              <v-text-field
+                v-model="recordPayload.balance"
+                :error-messages="errors"
+                :counter="5"
+                label="Balance (if any)"
+                prepend-icon="mdi-book-open"
+              >
+              </v-text-field>
+            </validation-provider>
+          </v-col>
+        </v-row>
 
-          <span
-            v-else-if="index === 2"
-            class="overline grey--text text--darken-3 mx-2"
-          >
-            +{{ files.length - 2 }} File(s)
-          </span>
-        </template>
-      </v-file-input>
-    </v-col>
+        <v-row>
+          <v-col cols="20" md="8">
+            <v-text-field
+              v-model="recordPayload.remarks"
+              label="Remakrs if any "
+              prepend-icon="mdi-chat-processing-outline"
+            ></v-text-field>
+          </v-col>
+        </v-row>
 
-    <v-row align="center" justify="space-around">
-      <v-col cols="20" md="8">
-        <v-btn color="yellow" class="ma-2 black--text" @click="submitRenew">
-          Renew Member
-          <v-icon right dark> mdi-cloud-upload </v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-form>
+        <v-row>
+          <v-col cols="20" md="8">
+            <v-file-input accept="image/*" label="File input"></v-file-input>
+          </v-col>
+        </v-row>
+
+        <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
+        <v-btn @click="clear"> clear </v-btn>
+      </form>
+    </validation-observer>
+    <v-img
+      :src="`https://picsum.photos/1000/1000?image=${15 * 5 + 10}`"
+      :lazy-src="`https://picsum.photos/10/6?image=${15 * 5 + 10}`"
+      aspect-ratio="18"
+    >
+    </v-img>
+  </v-card>
 </template>
 
 <script>
@@ -172,13 +213,58 @@ import {
   fetchMemberByMobileAPI,
 } from "./../constent/constent";
 
+import { required, digits, email, max, regex } from "vee-validate/dist/rules";
+import {
+  extend,
+  ValidationObserver,
+  ValidationProvider,
+  setInteractionMode,
+} from "vee-validate";
+
+setInteractionMode("eager");
+
+extend("digits", {
+  ...digits,
+  message: "{_field_} needs to be {length} digits. ({_value_})",
+});
+
+extend("required", {
+  ...required,
+  message: "{_field_} can not be empty",
+});
+
+extend("max", {
+  ...max,
+  message: "{_field_} may not be greater than {length} characters",
+});
+
+extend("regex", {
+  ...regex,
+  message: "{_field_} {_value_} does not match {regex}",
+});
+
+extend("email", {
+  ...email,
+  message: "Email must be valid",
+});
+
 export default {
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   data: () => ({
     baseurl: process.env.VUE_APP_BASE_URL,
     port: process.env.VUE_APP_UI_PORT,
-    valid: false,
-    itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
+
+    postmessage: "",
+    m: 0,
+
+    menu: false,
+
+    genders: ["Male", "Female", "Rather not to say"],
     plans: ["1 Month", "3 Months", "6 Months", "1 Year"],
+    itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
 
     recordPayload: {
       txtype: "RENEWAL",
@@ -193,12 +279,29 @@ export default {
       remarks: "",
       files: "",
     },
-    savingSuccessful: false,
-    savingError: false,
-    message: "test",
   }),
 
   methods: {
+    submit() {
+      this.$refs.observer.validate();
+      const url = `${this.baseurl}:${this.port}${memberRecordPostAPI}`;
+      /** Record the Member Tx data for Registration */
+      axios
+        .post(url, this.recordPayload)
+        .then((res) => {
+          this.m = 1;
+
+          console.log("Response Payload --->", res.data.amount);
+          this.postmessage = `Renewal Successful : Name - ${res.data.name}, Plan - ${res.data.plan}, Amount - ${res.data.amount}, Balance - ${res.data.balance}`;
+          console.log("Response from Member Record Data", res.data);
+        })
+        .catch((error) => {
+          this.m = 2;
+          this.postmessage = "Error while capturing the Member Record!";
+          console.error("Error while capturing the Member Record", error);
+        });
+    },
+
     fetchMemberDetails() {
       const url =
         `${this.baseurl}:${this.port}${fetchMemberByMobileAPI}` +
@@ -217,22 +320,20 @@ export default {
         });
     },
 
-    submitRenew() {
-      const url = `${this.baseurl}:${this.port}${memberRecordPostAPI}`;
-      /** Record the Member Tx data for Registration */
-      axios
-        .post(url, this.recordPayload)
-        .then((res) => {
-          this.savingSuccessful = true;
-          console.log("Response Payload --->", res.data.amount);
-          this.message = `Renewal Successful : Name - ${res.data.name}, Plan - ${res.data.plan}, Amount - ${res.data.amount}, Balance - ${res.data.balance}`;
-          console.log("Response from Member Record Data", res.data);
-        })
-        .catch((error) => {
-          this.savingSuccessful = true;
-          this.message = "Error while capturing the Member Record!";
-          console.error("Error while capturing the Member Record", error);
-        });
+    clear() {
+      this.recordPayload.name = "";
+      this.recordPayload.mobile = "";
+      this.recordPayload.email = "";
+      this.recordPayload.plan = "";
+      this.recordPayload.txdate = "";
+      this.recordPayload.mode = "";
+      this.recordPayload.amount = "";
+      this.recordPayload.balance = "";
+      this.recordPayload.remarks = "";
+      this.recordPayload.files = "";
+      this.m = 0;
+
+      this.$refs.observer.reset();
     },
   },
 };
