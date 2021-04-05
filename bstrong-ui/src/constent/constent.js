@@ -1,21 +1,17 @@
-const baseUrl = "http://0.0.0.0"
-const port = 8080
-
 // Register
-export const urlMemberPost = `${baseUrl}:${port}/api/members/`;
-export const urlMemberRecordPost = `${baseUrl}:${port}/api/memberRecords/`;
+export const memberPostAPI = '/api/members/';
+export const memberRecordPostAPI = '/api/memberRecords/';
 
 // Renewal
-export const urlFetchMemberByMobile = `${baseUrl}:${port}/api/members/`;
-
-export const urlFetchMemberRecordByMobile = `${baseUrl}:${port}/api/memberRecords/`;
+export const fetchMemberByMobileAPI = '/api/members/';
+export const fetchMemberRecordByMobileAPI = '/api/memberRecords/';
 
 // Home
-export const urlFetchMemberRecord = `${baseUrl}:${port}/api/memberRecords/recentFiveMemberTx`;
-export const urlFetchExpense = `${baseUrl}:${port}/api/expenses/recentFiveExpenses`;
+export const fetchMemberRecordAPI = '/api/memberRecords/recentFiveMemberTx';
+export const fetchExpenseAPI = '/api/expenses/recentFiveExpenses';
 
 // Expense
-export const urlExpensePost = `${baseUrl}:${port}/api/expenses/`;
+export const expensePostAPI = '/api/expenses/';
 
 // Revenue
-export const urlFetchRevenueRecord = `${baseUrl}:${port}/api/revenues/`;
+export const revenueRecordAPI = '/api/revenues/';

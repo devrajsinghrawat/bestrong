@@ -25,11 +25,14 @@
 
 <script>
 import axios from "axios";
-import { urlFetchMemberRecord, urlFetchExpense } from "./../constent/constent";
+import { fetchMemberRecordAPI, fetchExpenseAPI } from "./../constent/constent";
 
 export default {
   data() {
     return {
+      baseurl: process.env.VUE_APP_BASE_URL,
+      port: process.env.VUE_APP_UI_PORT,
+
       headersexpense: [
         {
           text: "Expenses Type",
@@ -60,9 +63,9 @@ export default {
   },
 
   mounted: function () {
-    console.log(urlFetchMemberRecord);
+    const urlMemberRecords = `${this.baseurl}:${this.port}${fetchMemberRecordAPI}`;
     axios
-      .get(urlFetchMemberRecord)
+      .get(urlMemberRecords)
       .then((response) => {
         console.log(response.data);
         this.memberrecords = response.data;
@@ -74,8 +77,9 @@ export default {
       });
 
     // Fetch recent expense
+    const urlExpenseRecords = `${this.baseurl}:${this.port}${fetchExpenseAPI}`;
     axios
-      .get(urlFetchExpense)
+      .get(urlExpenseRecords)
       .then((response) => {
         console.log(response.data);
         this.expenserecords = response.data;

@@ -203,10 +203,13 @@
 import axios from "axios";
 // import moment from "moment";
 // const { format, parseISO } = require("date-fns");
-import { urlMemberPost, urlMemberRecordPost } from "./../constent/constent";
+import { memberPostAPI, memberRecordPostAPI } from "./../constent/constent";
 
 export default {
   data: () => ({
+    baseurl: process.env.VUE_APP_BASE_URL,
+    port: process.env.VUE_APP_UI_PORT,
+
     valid: false,
     genders: ["Male", "Female", "Rather not to say"],
     plans: ["1 Month", "3 Months", "6 Months", "1 Year"],
@@ -270,24 +273,25 @@ export default {
       console.log("PostPayload recordPayload --->", this.recordPayload);
       console.log("PostPayload registerPayload --->", registerPayload);
 
-      console.log("urlMemberPost --->", urlMemberPost);
-
+      // console.log("urlMemberPost --->", urlMemberPost);
+      const url = `${this.baseurl}:${this.port}${memberPostAPI}`;
       /** Record the Member Registration data*/
       axios
-        .post(urlMemberPost, registerPayload)
+        .post(url, registerPayload)
         .then((response) => {
           this.savingSuccessful = true;
           this.message = `Congratuations ${response.data.name} Welcome to BeStrong Family !`;
           console.log("Register Response --->", response.data);
 
-          console.log("urlMemberRecordPost --->", urlMemberRecordPost);
           console.log(
             "PostPayload memberRecordPayload --->",
             memberRecordPayload
           );
+          const url = `${this.baseurl}:${this.port}${memberRecordPostAPI}`;
+
           /** Record the Member Tx data for Registration */
           axios
-            .post(urlMemberRecordPost, memberRecordPayload)
+            .post(url, memberRecordPayload)
             .then((res) => {
               console.log("Response from Member Record Data", res.data);
             })

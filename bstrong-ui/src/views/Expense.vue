@@ -117,10 +117,12 @@
 
 <script>
 import axios from "axios";
-import { urlExpensePost } from "./../constent/constent";
+import { expensePostAPI } from "./../constent/constent";
 
 export default {
   data: () => ({
+    baseurl: process.env.VUE_APP_BASE_URL,
+    port: process.env.VUE_APP_UI_PORT,
     valid: false,
     itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
     itemstype: ["Rent", "Bill Payment", "Salary", "Item Purchase", "Others"],
@@ -139,6 +141,7 @@ export default {
 
   methods: {
     submitExpense() {
+      const urlExpensePost = `${this.baseurl}:${this.port}${expensePostAPI}`;
       console.log("PostPayload --->", this.expensePayload);
 
       axios

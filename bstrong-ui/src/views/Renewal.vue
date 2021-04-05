@@ -168,12 +168,14 @@
 <script>
 import axios from "axios";
 import {
-  urlMemberRecordPost,
-  urlFetchMemberByMobile,
+  memberRecordPostAPI,
+  fetchMemberByMobileAPI,
 } from "./../constent/constent";
 
 export default {
   data: () => ({
+    baseurl: process.env.VUE_APP_BASE_URL,
+    port: process.env.VUE_APP_UI_PORT,
     valid: false,
     itemsmode: ["Online Payment", "Bank Transfer", "Cheque", "Cash"],
     plans: ["1 Month", "3 Months", "6 Months", "1 Year"],
@@ -198,10 +200,12 @@ export default {
 
   methods: {
     fetchMemberDetails() {
-      const urlGet = urlFetchMemberByMobile + this.recordPayload.mobile;
-      console.log("urlGet  --->", urlGet);
+      const url =
+        `${this.baseurl}:${this.port}${fetchMemberByMobileAPI}` +
+        this.recordPayload.mobile;
+
       axios
-        .get(urlGet, this.recordPayload)
+        .get(url, this.recordPayload)
         .then((response) => {
           this.recordPayload.name = response.data.name;
           this.recordPayload.email = response.data.email;
@@ -214,9 +218,10 @@ export default {
     },
 
     submitRenew() {
+      const url = `${this.baseurl}:${this.port}${memberRecordPostAPI}`;
       /** Record the Member Tx data for Registration */
       axios
-        .post(urlMemberRecordPost, this.recordPayload)
+        .post(url, this.recordPayload)
         .then((res) => {
           this.savingSuccessful = true;
           console.log("Response Payload --->", res.data.amount);

@@ -154,11 +154,14 @@
 
 <script>
 import axios from "axios";
-import { urlFetchRevenueRecord } from "./../constent/constent";
+import { revenueRecordAPI } from "./../constent/constent";
 
 export default {
   data() {
     return {
+      baseurl: process.env.VUE_APP_BASE_URL,
+      port: process.env.VUE_APP_UI_PORT,
+
       headers: [
         {
           text: "Month",
@@ -175,8 +178,11 @@ export default {
   },
 
   mounted: function () {
+    const url = `${this.baseurl}:${this.port}${revenueRecordAPI}`;
+
+    console.log("rev url", url);
     axios
-      .get(urlFetchRevenueRecord)
+      .get(url)
       .then((response) => {
         console.log(response.data);
         this.revenuedata = response.data;
