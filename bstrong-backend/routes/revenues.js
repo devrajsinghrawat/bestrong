@@ -159,6 +159,7 @@ router.get('/', async (req, res) => {
             monthlyData[month].revenue += record.amount;
             console.log('monthlyData[month]', monthlyData[month])
 
+            monthlyData[month].pl += monthlyData[month].revenue
 
             // Count number of registration for fetched month
             record.txtype == "REGISTRATION" ?
@@ -183,7 +184,7 @@ router.get('/', async (req, res) => {
             console.log("record.amount", record.amount)
 
             monthlyData[month].expense += record.amount;
-            monthlyData[month].pl = monthlyData[month].revenue - record.amount;
+            monthlyData[month].pl -= record.amount;
         });
 
         revenuePayload.netRevenue = netRevenue;
