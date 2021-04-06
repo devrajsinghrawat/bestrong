@@ -5,3 +5,9 @@ coverage
 db-data/
 .vscode
 .DS_Store
+
+.env.production.local
+.env.development.local
+.env
+
+toDo

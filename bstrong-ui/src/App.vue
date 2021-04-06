@@ -1,10 +1,10 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer color="yellow darken-1" v-model="drawer" app>
+    <v-navigation-drawer color="yellow darken-2" v-model="drawer" app>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title black--text">
-            BESTRONG-FC
+            Be Strong Fitness Club
           </v-list-item-title>
           <v-list-item-subtitle class="black--text">
             Member Managenet System
